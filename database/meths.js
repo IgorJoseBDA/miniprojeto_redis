@@ -22,4 +22,14 @@ const delete_user = (request, response) => {
     })
 }
 
-module.exports = {add_user,delete_user}
+const update_user = (request, response) => {
+    const query = 'UPDATE usuario SET nome = ($1) WHERE id = ($2)'
+    const user = [request.params.nome, request.params.id]
+    pool.query(query,user, (error,res) => {
+        if(error) throw error
+        console.log(`${res.command} ${res.rowCount}`)
+        response.status(200).json({ query: `${res.command} ${res.rowCount}` })
+    })
+}
+
+module.exports = {add_user,delete_user,update_user}
