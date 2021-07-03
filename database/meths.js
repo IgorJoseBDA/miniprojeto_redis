@@ -34,7 +34,7 @@ const update_user = (request, response) => {
     })
 }
 
-const draft_user = (request, response) => {
+const set_draft_user = (request, response) => {
     const id = request.params.id
     const draft = request.params.rascunho
 
@@ -46,7 +46,18 @@ const draft_user = (request, response) => {
             response.status(200).json([{id: id, draft: draft}])
         }
     })
-
 }
 
-module.exports = {add_user,delete_user,update_user,draft_user}
+const get_draft_user = (request, response) => {
+    const id = request.params.id 
+    redis.get(id, (error, reply) => {
+        if(reply != null){
+            response.status(200).json({ id: id, draft: reply });
+        }
+        else {
+            response.status(400).send({message: 'O Rascunho não foi encontrado'})
+        }
+    })
+}
+
+module.exports = {add_user,delete_user,update_user,set_draft_user,get_draft_user}
