@@ -6,6 +6,7 @@ const meths = require('./database/meths')
 
 //Criando Rota
 app.get('/cadastrar/:nome/:email',meths.add_user)
+app.get('/deletar/:id',meths.delete_user)
 
 //Abrindo Porta
 app.listen(process.env.PORT,() => {
