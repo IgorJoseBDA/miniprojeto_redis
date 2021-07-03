@@ -9,6 +9,7 @@ const meths = require('./database/meths')
 app.get('/cadastrar/:nome/:email',meths.add_user)
 app.get('/deletar/:id',meths.delete_user)
 app.get('/editar/:id/:nome',meths.update_user)
+app.get('/usuarios',meths.search_user)
 app.get('/rascunho/:id/:rascunho',meths.set_draft_user)
 app.get('/rascunho/:id',meths.get_draft_user)
 

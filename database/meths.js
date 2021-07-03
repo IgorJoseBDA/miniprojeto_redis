@@ -34,6 +34,21 @@ const update_user = (request, response) => {
     })
 }
 
+const search_user = (request, response) => {
+    pool.query("SELECT * FROM usuario", (error, results) => {
+        if(error){
+            response.status(400).send(err);
+        }
+        else if (results.rowCount== 0) {
+            response.status(200).json({message: "Não existe nenhum usuario cadastrado até o momento, tente adicionar um novo usuario"});
+
+        } 
+        else {
+            response.status(200).json(results.rows);
+        }
+    })
+}
+
 const set_draft_user = (request, response) => {
     const id = request.params.id
     const draft = request.params.rascunho
@@ -60,4 +75,4 @@ const get_draft_user = (request, response) => {
     })
 }
 
-module.exports = {add_user,delete_user,update_user,set_draft_user,get_draft_user}
+module.exports = {add_user,delete_user,update_user,search_user,set_draft_user,get_draft_user}
