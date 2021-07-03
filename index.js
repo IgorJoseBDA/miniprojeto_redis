@@ -9,7 +9,7 @@ const meths = require('./database/meths')
 app.get('/cadastrar/:nome/:email',meths.add_user)
 app.get('/deletar/:id',meths.delete_user)
 app.get('/editar/:id/:nome',meths.update_user)
-app.get('/usuario/:id',meths.search_user)
+app.get('/usuario/:id/:rascunho',meths.draft_user)
 
 //Abrindo Porta
 app.listen(process.env.PORT,() => {

@@ -34,27 +34,19 @@ const update_user = (request, response) => {
     })
 }
 
-const search_user = (request, response) => {
-    const user = [request.params.id]
-    redis.get(user, (error,reply) => {
-        if(reply != null){
-            console.log("O usuario foi encontrado no banco REDIS!")
-            response.status(200).json([{user: parseInt(user), nome: reply}])
+const draft_user = (request, response) => {
+    const id = request.params.id
+    const draft = request.params.rascunho
+
+    redis.setex(id, 7200, draft, (error, res) => {
+        if(error){
+            response.status(400).send(error)
         }
         else{
-            pool.query("SELECT * FROM usuario WHERE id = ($1)", user, (error, results) => {
-                if(error) throw error
-                else if(results.rows.length > 0){
-                    console.log("O usuario já estava cadastrado no banco POSTGRES")
-                    response.status(200).json(results.rows)
-                    redis.setex(results.rows[0].id,7200,results.rows[0].nome , (err,res) => {
-                        if(err) throw err;
-                        console.log('O usuario foi encontrado no banco do postgres e foi adicionado no banco redis com tempo de 2 horas')
-                    })
-                }
-            })
+            response.status(200).json([{id: id, draft: draft}])
         }
     })
+
 }
 
-module.exports = {add_user,delete_user,update_user,search_user}
+module.exports = {add_user,delete_user,update_user,draft_user}
